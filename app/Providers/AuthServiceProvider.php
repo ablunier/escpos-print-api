@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Exceptions\SecurityException;
 use Illuminate\Support\ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider
@@ -29,7 +30,11 @@ class AuthServiceProvider extends ServiceProvider
         // the User instance via an API token or any other method necessary.
 
         $this->app['auth']->viaRequest('api', function ($request) {
-            if ($request->input('api_token') === env('WEB_API_TOKEN')) {
+            if (empty(env('CLIENT_API_TOKEN'))) {
+                throw new SecurityException('Set the CLIENT_API_TOKEN in your environment configuration');
+            }
+
+            if ($request->input('api_token') === env('CLIENT_API_TOKEN')) {
                 return true;
             }
         });

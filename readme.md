@@ -1,21 +1,40 @@
-# Lumen PHP Framework
+# ESC/POS Print Server API
 
-[![Build Status](https://travis-ci.org/laravel/lumen-framework.svg)](https://travis-ci.org/laravel/lumen-framework)
-[![Total Downloads](https://poser.pugx.org/laravel/lumen-framework/d/total.svg)](https://packagist.org/packages/laravel/lumen-framework)
-[![Latest Stable Version](https://poser.pugx.org/laravel/lumen-framework/v/stable.svg)](https://packagist.org/packages/laravel/lumen-framework)
-[![Latest Unstable Version](https://poser.pugx.org/laravel/lumen-framework/v/unstable.svg)](https://packagist.org/packages/laravel/lumen-framework)
-[![License](https://poser.pugx.org/laravel/lumen-framework/license.svg)](https://packagist.org/packages/laravel/lumen-framework)
+This application exposes an API to allow print on local thermal receipt printers from the WAN. This project uses and exists thanks to the awesome [mike42/escpos-php](https://github.com/mike42/escpos-php) PHP package.
 
-Laravel Lumen is a stunningly fast PHP micro-framework for building web applications with expressive, elegant syntax. We believe development must be an enjoyable, creative experience to be truly fulfilling. Lumen attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as routing, database abstraction, queueing, and caching.
+## The problem
 
-## Official Documentation
+If you want to print from your PHP code to a thermal printer and it is on a different network you will need to stand up a VPN service or something similar. But if you are not able to do this, with this application installed in your local network the problem is solved.
 
-Documentation for the framework can be found on the [Lumen website](http://lumen.laravel.com/docs).
+## Installation
 
-## Security Vulnerabilities
+This API was developed with the [Lumen PHP framework](https://lumen.laravel.com/). Check its [requirements](https://lumen.laravel.com/docs/5.3#server-requirements) to setup your local server.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell at taylor@laravel.com. All security vulnerabilities will be promptly addressed.
+1. Clone this repository or download the latest release and place it in your local server.
+2. Execute composer install.
+
+## Configuration
+
+1. Setup your [environment configuration](https://lumen.laravel.com/docs/5.3/configuration#environment-configuration).
+2. Set your printers.json file. You can use the printers.example.json as an example source.
+3. Set the CLIENT_API_TOKEN in your environment configuration.
+
+## Usage
+
+The easiest way print via this API is using [this connector implementation](https://gist.github.com/ablunier/f91e2d2adb8db4c560a9d63f82cb3bb7). With it, you only need to change the connector in your implementation with the [mike42/escpos-php](https://github.com/mike42/escpos-php) PHP package:
+
+```php
+<?php 
+
+$connector = new PrintServerApi('https://myapihost', 'printerId', 'MySecretToken');
+
+$printer = new Printer($connector);
+
+$printer->text("Hello World!\n");
+$printer->cut();
+$printer->close();
+```
 
 ## License
 
-The Lumen framework is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT)
+This application is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT)
