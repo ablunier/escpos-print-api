@@ -66,7 +66,8 @@ class PrinterProvider implements PrinterProviderInterface
         }
 
         $connectorClass = $this->drivers[$printerConfig['driver']]['connector'];
-        $param = $this->drivers[$printerConfig['driver']]['param'];
+        $paramName = $this->drivers[$printerConfig['driver']]['param'];
+        $param = $printerConfig[$paramName];
 
         $connector = new $connectorClass($param);
 
