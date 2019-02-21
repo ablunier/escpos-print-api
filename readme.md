@@ -4,7 +4,7 @@ This application exposes an API to allow print on local thermal receipt printers
 
 ## The problem
 
-If you want to print from your PHP code to a thermal printer and it is on a different network you will need to stand up a VPN service or something similar. But if you are not able to do this, with this application installed in your local network the problem is solved.
+If you want to print from your application to a thermal printer and it is on a different network you will probably need to stand up a VPN service. But if you are not able to do this, with this application installed in your local network the problem is solved.
 
 ## Installation
 
